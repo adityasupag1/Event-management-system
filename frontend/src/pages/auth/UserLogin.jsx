@@ -14,10 +14,11 @@ export default function UserLogin() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const identifier = form.userId.includes('@')
-        ? { email: form.userId, password: form.password, role: 'user' }
-        : { userId: form.userId, password: form.password, role: 'user' };
-      await login(identifier);
+      const rawIdentifier = form.userId.trim();
+      const credential = rawIdentifier.includes('@')
+        ? { email: rawIdentifier.toLowerCase(), password: form.password, role: 'user' }
+        : { userId: rawIdentifier, password: form.password, role: 'user' };
+      await login(credential);
       toast.success('Welcome back!');
       nav('/user/dashboard');
     } catch (err) {
