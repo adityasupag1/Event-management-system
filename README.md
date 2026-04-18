@@ -201,5 +201,3 @@ this is an event management system
 # Event-Management-System
 this is an event management system
 >>>>>>> 1a652353f484d802397b2b1b23478a0a3b2e66ba
-#   E v e n t - m a n a g e m e n t - s y s t e m  
- 
