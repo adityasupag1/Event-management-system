@@ -193,10 +193,4 @@ Per the original brief, these screens appeared in the design but are non-code de
 
 MIT
 =======
-# Event-Management-System
-this is an event management system
->>>>>>> 1a652353f484d802397b2b1b23478a0a3b2e66ba
-=======
-# Event-Management-System
-this is an event management system
->>>>>>> 1a652353f484d802397b2b1b23478a0a3b2e66ba
+
