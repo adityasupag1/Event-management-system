@@ -18,16 +18,33 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [
+/** Split comma-separated env values, trim, strip trailing slashes (Origin never has one). */
+function parseOriginList(...sources) {
+  const set = new Set();
+  for (const src of sources) {
+    if (src == null || src === '') continue;
+    for (const part of String(src).split(',')) {
+      const o = part.trim().replace(/\/+$/, '');
+      if (o) set.add(o);
+    }
+  }
+  return [...set];
+}
+
+// Always allow the deployed frontend even if CLIENT_URL was copied from local .env (localhost only).
+const defaultClientOrigin = 'https://event-management-system-cui.netlify.app';
+const allowedOrigins = parseOriginList(
   'http://localhost:5173',
-  process.env.CLIENT_URL || 'https://event-management-system-cui.netlify.app',
-];
-
-
+  defaultClientOrigin,
+  process.env.CLIENT_URL
+);
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, cb) => {
+      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+      return cb(null, false);
+    },
     credentials: true,
   })
 );
