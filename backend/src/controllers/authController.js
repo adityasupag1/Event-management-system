@@ -75,7 +75,12 @@ export const signup = asyncHandler(async (req, res) => {
 // @desc Login — accepts either email or userId
 // @route POST /api/auth/login
 export const login = asyncHandler(async (req, res) => {
-  const { userId, email, password, role } = req.body;
+  const rawUserId = req.body.userId;
+  const rawEmail = req.body.email;
+  const password = req.body.password;
+  const role = req.body.role;
+  const userId = rawUserId?.trim();
+  const email = rawEmail?.trim().toLowerCase();
   const identifier = userId || email;
   if (!identifier || !password) {
     res.status(400);
