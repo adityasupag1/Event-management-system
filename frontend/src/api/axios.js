@@ -1,10 +1,19 @@
 import axios from 'axios';
 
-// Default: same-origin `/api` — Vite dev server proxies it (vite.config.js); Netlify rewrites it (netlify.toml).
-// Set VITE_API_URL only if the frontend is hosted somewhere without a proxy (then the API must allow that origin in CORS).
-const explicitBase = import.meta.env.VITE_API_URL;
-const baseURL = explicitBase
-  ? `${String(explicitBase).replace(/\/$/, '')}/api`
+const bakedApiOrigin = import.meta.env.VITE_API_URL;
+
+// On *.netlify.app, always use same-origin `/api` so Netlify can proxy (see public/_redirects).
+// Ignores a wrongly set VITE_API_URL at build time, which would call Render directly and hit CORS.
+const isNetlifyAppHost =
+  typeof window !== 'undefined' && /\.netlify\.app$/i.test(window.location.hostname);
+
+const useDirectApi =
+  !isNetlifyAppHost &&
+  typeof bakedApiOrigin === 'string' &&
+  bakedApiOrigin.trim() !== '';
+
+const baseURL = useDirectApi
+  ? `${bakedApiOrigin.replace(/\/$/, '')}/api`
   : '/api';
 
 const api = axios.create({

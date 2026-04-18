@@ -1,0 +1,13 @@
+# Repo-root Netlify rules (used when the linked site has no Base directory, or Netlify reads root config).
+# The SPA still needs frontend/public/_redirects copied into dist — that works for any publish folder.
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://event-management-system-i0hm.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
