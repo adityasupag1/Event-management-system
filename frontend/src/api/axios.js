@@ -1,14 +1,24 @@
 import axios from 'axios';
 
 const bakedApiOrigin = import.meta.env.VITE_API_URL;
+// Set on Vercel’s build machines; baked into the client bundle for that deploy.
+const builtOnVercel = import.meta.env.VERCEL === '1' || import.meta.env.VERCEL === 'true';
 
-// On *.netlify.app, always use same-origin `/api` so Netlify can proxy (see public/_redirects).
-// Ignores a wrongly set VITE_API_URL at build time, which would call Render directly and hit CORS.
+// Same-origin `/api` — proxied by Netlify (public/_redirects), Vercel (vercel.json), or Vite dev server.
+// On *.netlify.app / *.vercel.app (or any Vercel build), ignore VITE_API_URL so we never call Render from the browser and hit CORS.
 const isNetlifyAppHost =
   typeof window !== 'undefined' && /\.netlify\.app$/i.test(window.location.hostname);
+const isVercelAppHost =
+  typeof window !== 'undefined' && /\.vercel\.app$/i.test(window.location.hostname);
+
+const forceRelativeApi =
+  import.meta.env.DEV ||
+  builtOnVercel ||
+  isNetlifyAppHost ||
+  isVercelAppHost;
 
 const useDirectApi =
-  !isNetlifyAppHost &&
+  !forceRelativeApi &&
   typeof bakedApiOrigin === 'string' &&
   bakedApiOrigin.trim() !== '';
 

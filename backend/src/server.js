@@ -31,23 +31,24 @@ function parseOriginList(...sources) {
   return [...set];
 }
 
-// Always allow the deployed Netlify app even if CLIENT_URL on Render is localhost-only (copied from
-// local .env), which used to drop the production frontend from CORS.
-const defaultClientOrigin = 'https://event-management-system-cui.netlify.app';
-const allowedOrigins = parseOriginList(
-  'http://localhost:5173',
-  defaultClientOrigin,
+// Default frontends (Render CORS) if CLIENT_URL is still localhost-only on production.
+const defaultClientOrigins = parseOriginList(
+  'https://event-management-system-cui.netlify.app',
+  'https://event-management-system-blush-beta.vercel.app',
   process.env.CLIENT_URL,
   process.env.ALLOWED_ORIGINS
 );
+const stringOrigins = parseOriginList('http://localhost:5173', ...defaultClientOrigins);
+// Preview deployments: <name>-git-<branch>-<scope>.vercel.app
+const vercelOriginPattern = /^https:\/\/[^\s/]+\.vercel\.app$/i;
 
 if (process.env.NODE_ENV !== 'test') {
-  console.log(`CORS allowed origins (${allowedOrigins.length}): ${allowedOrigins.join(', ')}`);
+  console.log(`CORS (strings): ${stringOrigins.join(', ')}; plus *.vercel.app pattern`);
 }
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: [...stringOrigins, vercelOriginPattern],
     credentials: true,
   })
 );
