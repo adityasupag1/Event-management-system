@@ -18,14 +18,12 @@ connectDB();
 
 const app = express();
 
-// const allowedOrigins = [
-//   'http://localhost:5173',
-//   process.env.CLIENT_URL || 'https://event-management-system-cui.netlify.app',
-// ];
-
 const allowedOrigins = [
-  'http://localhost:5173',  'https://event-management-system-cui.netlify.app',
+  'http://localhost:5173',
+  process.env.CLIENT_URL || 'https://event-management-system-cui.netlify.app',
 ];
+
+
 
 app.use(
   cors({
