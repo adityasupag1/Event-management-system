@@ -14,9 +14,10 @@ export default function VendorLogin() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const cred = form.userId.includes('@')
-        ? { email: form.userId, password: form.password, role: 'vendor' }
-        : { userId: form.userId, password: form.password, role: 'vendor' };
+      const rawIdentifier = form.userId.trim();
+      const cred = rawIdentifier.includes('@')
+        ? { email: rawIdentifier.toLowerCase(), password: form.password, role: 'vendor' }
+        : { userId: rawIdentifier, password: form.password, role: 'vendor' };
       await login(cred);
       toast.success('Welcome back!');
       nav('/vendor/dashboard');
