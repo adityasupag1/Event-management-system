@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
-import { apiErrorMessage } from '../../utils/apiErrorMessage';
+import { toastAuthFormError } from '../../utils/apiErrorMessage';
 import { Icon } from '../../components/ui/Primitives';
 import AuthShell from './AuthShell';
 
@@ -23,7 +23,7 @@ export default function UserLogin() {
       toast.success('Welcome back!');
       nav('/user/dashboard');
     } catch (err) {
-      toast.error(apiErrorMessage(err, 'Login failed'));
+      toastAuthFormError(err, 'Login failed');
     }
   };
 

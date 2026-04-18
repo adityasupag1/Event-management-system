@@ -1,3 +1,10 @@
+# Proxy API to Render so the browser only talks to Netlify (same origin → no CORS).
+[[redirects]]
+  from = "/api/*"
+  to = "https://event-management-system-i0hm.onrender.com/api/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
