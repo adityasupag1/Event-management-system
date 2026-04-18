@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 # EventMS — Event Management System
 
 A full-stack **MERN** (MongoDB + Express + React + Node) event management platform with three role-based portals: **User**, **Vendor**, and **Admin**. Built pixel-accurate from the Stitch Material Design 3 system with role-themed colours (Admin=Blue, Vendor=Yellow, User=Green) and category chips (Catering, Florist, Decoration, Lighting).
