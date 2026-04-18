@@ -14,9 +14,10 @@ export default function AdminLogin() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const cred = form.userId.includes('@')
-        ? { email: form.userId, password: form.password, role: 'admin' }
-        : { userId: form.userId, password: form.password, role: 'admin' };
+      const rawIdentifier = form.userId.trim();
+      const cred = rawIdentifier.includes('@')
+        ? { email: rawIdentifier.toLowerCase(), password: form.password, role: 'admin' }
+        : { userId: rawIdentifier, password: form.password, role: 'admin' };
       await login(cred);
       toast.success('Admin authenticated.');
       nav('/admin/dashboard');
