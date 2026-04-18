@@ -31,20 +31,23 @@ function parseOriginList(...sources) {
   return [...set];
 }
 
-// Always allow the deployed frontend even if CLIENT_URL was copied from local .env (localhost only).
+// Always allow the deployed Netlify app even if CLIENT_URL on Render is localhost-only (copied from
+// local .env), which used to drop the production frontend from CORS.
 const defaultClientOrigin = 'https://event-management-system-cui.netlify.app';
 const allowedOrigins = parseOriginList(
   'http://localhost:5173',
   defaultClientOrigin,
-  process.env.CLIENT_URL
+  process.env.CLIENT_URL,
+  process.env.ALLOWED_ORIGINS
 );
+
+if (process.env.NODE_ENV !== 'test') {
+  console.log(`CORS allowed origins (${allowedOrigins.length}): ${allowedOrigins.join(', ')}`);
+}
 
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-      return cb(null, false);
-    },
+    origin: allowedOrigins,
     credentials: true,
   })
 );

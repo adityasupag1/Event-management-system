@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
+import { apiErrorMessage } from '../../utils/apiErrorMessage';
 import { Icon } from '../../components/ui/Primitives';
 import { getColor } from '../../utils/theme';
 import AuthShell from './AuthShell';
@@ -45,7 +46,7 @@ export default function AdminSignup() {
       toast.success('Admin account created!');
       nav('/admin/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Signup failed');
+      toast.error(apiErrorMessage(err, 'Signup failed'));
     }
   };
 

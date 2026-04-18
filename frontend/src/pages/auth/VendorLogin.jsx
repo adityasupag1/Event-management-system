@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
+import { apiErrorMessage } from '../../utils/apiErrorMessage';
 import { Icon } from '../../components/ui/Primitives';
 import AuthShell from './AuthShell';
 
@@ -22,7 +23,7 @@ export default function VendorLogin() {
       toast.success('Welcome back!');
       nav('/vendor/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      toast.error(apiErrorMessage(err, 'Login failed'));
     }
   };
 
